@@ -1,10 +1,15 @@
 #from django.shortcuts import render
+import json
+
+from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from datetime import datetime
 
 # Create your views here.
+from mainapp.models import News, Course
+
 
 class ContactsView(TemplateView):
     template_name = 'mainapp/contacts.html'
@@ -39,6 +44,10 @@ class ContactsView(TemplateView):
 class CoursesListView(TemplateView):
     template_name = 'mainapp/courses_list.html'
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = Course.objects.all()
+        return context_data
 
 class DocSiteView(TemplateView):
     template_name = 'mainapp/doc_site.html'
@@ -57,35 +66,37 @@ class NewsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
+        # context_data['object_list'] = [
+        #     {
+        #         'title': 'Новость раз',
+        #         'preview': 'Превью к новости раз',
+        #         'date': datetime.now()
+        #     }, {
+        #         'title': 'Новость два',
+        #         'preview': 'Превью к новости два',
+        #         'date': datetime.now()
+        #     }, {
+        #         'title': 'Новость три',
+        #         'preview': 'Превью к новости три',
+        #         'date': datetime.now()
+        #     }, {
+        #         'title': 'Новость четыре',
+        #         'preview': 'Превью к новости четыре',
+        #         'date': datetime.now()
+        #     }, {
+        #         'title': 'Новость пять',
+        #         'preview': 'Превью к новости пять',
+        #         'date': datetime.now()
+        #     }, {
+        #         'title': 'Новость шесть',
+        #         'preview': 'Превью к новости шесть',
+        #         'date': datetime.now()
+        #     }
+        #
+        # ]
 
-        context_data ['object_list'] = [
-            {
-                'title' : 'Новость раз',
-                'preview' : 'Превью к новости раз',
-                'date' : datetime.now()
-            },{
-                'title' : 'Новость два',
-                'preview' : 'Превью к новости два',
-                'date' : datetime.now()
-            },{
-                'title' : 'Новость три',
-                'preview' : 'Превью к новости три',
-                'date' : datetime.now()
-            },{
-                'title' : 'Новость четыре',
-                'preview' : 'Превью к новости четыре',
-                'date' : datetime.now()
-            },{
-                'title' : 'Новость пять',
-                'preview' : 'Превью к новости пять',
-                'date' : datetime.now()
-            },{
-                'title' : 'Новость шесть',
-                'preview' : 'Превью к новости шесть',
-                'date' : datetime.now()
-            }
+        context_data['object_list'] = News.objects.all()
 
-        ]
         return context_data
 
 
