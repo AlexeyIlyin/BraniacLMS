@@ -18,11 +18,14 @@ class BaseModel(models.Model):
 
 class NewsManager (models.Manager):
 
+    def delete(self):
+        pass
+
     def get_queryset(self):
         return super().get_queryset().filter(deleted=False)
 
 class News(BaseModel):
-    object = NewsManager
+    objects = NewsManager
 
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     preamble = models.CharField(max_length=1000, verbose_name='Вступление')
@@ -77,3 +80,7 @@ class CoursesTeacher(BaseModel):
 
     def __str__(self) -> str:
         return "{0:0>3} {1} {2}".format(self.pk, self.name_second, self.name_first)
+
+    class Meta:
+        verbose_name = 'Учителя курсов'
+        verbose_name_plural = 'Учителя курсов'
